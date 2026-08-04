@@ -27,8 +27,9 @@ export default function Dashboard() {
           <article><span>Upcoming</span><strong>0</strong></article>
           <article><span>Completed</span><strong>0</strong></article>
         </div>
-        <div className="empty-state"><div>📝</div><h2>No reminders yet</h2><p>Your first reminder will appear here.</p><button className="primary">+ Add Reminder</button></div>
-      </section>
-    </main>
-  );
-}
+        <div className="empty-state"><div>📝</div><h2>No reminders yet</h2><p>Your first reminder will appear here.</p><button
+  className="primary"
+  onClick={() => navigate("/add-reminder")}
+>
+  + Add Reminder
+</button>
