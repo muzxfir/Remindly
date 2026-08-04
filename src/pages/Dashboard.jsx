@@ -2,6 +2,26 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/firebase";
 import { useAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
+import { getReminders } from "../services/reminderService";
+
+const [reminders, setReminders] = useState([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  async function loadReminders() {
+    try {
+      const data = await getReminders();
+      setReminders(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  loadReminders();
+}, []);
 
 export default function Dashboard() {
   const { user } = useAuth();
