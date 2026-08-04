@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
+import AddReminder from "./pages/AddReminder";
 
 function PublicOnly({ children }) {
   const { user, loading } = useAuth();
