@@ -12,52 +12,86 @@ export default function Dashboard() {
     navigate("/login", { replace: true });
   }
 
+  const name = user?.displayName || user?.email?.split("@")[0] || "there";
+
   return (
     <main className="dashboard-page">
       <header className="dashboard-nav">
         <div className="brand">
           🔔 <span>Remindly</span>
         </div>
-        <button className="secondary" onClick={logout}>
-          Logout
-        </button>
+        <button className="secondary" onClick={logout}>Logout</button>
       </header>
 
       <section className="dashboard-shell">
-        <p className="eyebrow">YOUR DASHBOARD</p>
-        <h1>
-          Welcome, {user?.displayName || user?.email?.split("@")[0]} 👋
-        </h1>
-        <p className="dashboard-copy">
-          Login system working successfully. അടുത്തതായി reminders cloud-ൽ save
-          ചെയ്യാം.
-        </p>
+        <div className="dashboard-heading">
+          <div>
+            <p className="eyebrow">YOUR DASHBOARD</p>
+            <h1>Welcome, {name} 👋</h1>
+            <p className="dashboard-copy">
+              Keep track of your day and never miss an important reminder.
+            </p>
+          </div>
 
-        <div className="stat-grid">
-          <article>
-            <span>Today</span>
-            <strong>0</strong>
-          </article>
-          <article>
-            <span>Upcoming</span>
-            <strong>0</strong>
-          </article>
-          <article>
-            <span>Completed</span>
-            <strong>0</strong>
-          </article>
-        </div>
-
-        <div className="empty-state">
-          <div>📝</div>
-          <h2>No reminders yet</h2>
-          <p>Your first reminder will appear here.</p>
           <button
-            className="primary"
+            className="primary dashboard-add-button"
             onClick={() => navigate("/add-reminder")}
           >
             + Add Reminder
           </button>
+        </div>
+
+        <div className="top-cards">
+          <article className="dashboard-stat-card">
+            <div className="stat-icon">📅</div>
+            <div>
+              <span>Today</span>
+              <strong>0</strong>
+            </div>
+          </article>
+
+          <article className="dashboard-stat-card">
+            <div className="stat-icon">⏰</div>
+            <div>
+              <span>Upcoming</span>
+              <strong>0</strong>
+            </div>
+          </article>
+
+          <article className="dashboard-stat-card">
+            <div className="stat-icon">✅</div>
+            <div>
+              <span>Completed</span>
+              <strong>0</strong>
+            </div>
+          </article>
+        </div>
+
+        <div className="reminder-box">
+          <div className="reminder-box-heading">
+            <div>
+              <p className="eyebrow">REMINDERS</p>
+              <h2>My Reminders</h2>
+            </div>
+            <button
+              className="secondary"
+              onClick={() => navigate("/add-reminder")}
+            >
+              Add New
+            </button>
+          </div>
+
+          <div className="empty-state">
+            <div className="empty-icon">📝</div>
+            <h2>No reminders yet</h2>
+            <p>Your first reminder will appear here.</p>
+            <button
+              className="primary"
+              onClick={() => navigate("/add-reminder")}
+            >
+              + Add Reminder
+            </button>
+          </div>
         </div>
       </section>
     </main>
