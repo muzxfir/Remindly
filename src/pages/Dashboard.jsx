@@ -68,7 +68,28 @@ export default function Dashboard() {
 
         <button className="secondary" onClick={logout}>
           Logout
+          function testNotification() {
+  if (!("Notification" in window)) {
+    alert("Notifications are not supported on this device.");
+    return;
+  }
+
+  if (Notification.permission === "granted") {
+    new Notification("🔔 Remindly", {
+      body: "This is a test reminder notification!",
+    });
+  } else {
+    alert("Please allow notification permission first.");
+  }
+          }
         </button>
+        
+        <button
+  className="primary"
+  onClick={testNotification}
+>
+  🔔 Test Notification
+</button>
       </header>
 
       <section className="dashboard-shell">
