@@ -14,19 +14,24 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadReminders() {
-      try {
-        const data = await getReminders();
-        setReminders(data);
-      } catch (err) {
-        console.error("Failed to load reminders:", err);
-      } finally {
-        setLoading(false);
-      }
+  async function loadReminders() {
+    try {
+      const data = await getReminders();
+      setReminders(data);
+    } catch (err) {
+      console.error("Failed to load reminders:", err);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    loadReminders();
-  }, []);
+  loadReminders();
+
+  if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission();
+  }
+
+}, []);
 
   async function logout() {
     await signOut(auth);
