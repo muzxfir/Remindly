@@ -14,28 +14,44 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  async function loadReminders() {
-    try {
-      const data = await getReminders();
-      setReminders(data);
-    } catch (err) {
-      console.error("Failed to load reminders:", err);
-    } finally {
-      setLoading(false);
+    async function loadReminders() {
+      try {
+        const data = await getReminders();
+        setReminders(data);
+      } catch (err) {
+        console.error("Failed to load reminders:", err);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
 
-  loadReminders();
-
-  if ("Notification" in window && Notification.permission !== "granted") {
-    Notification.requestPermission();
-  }
-
-}, []);
+    loadReminders();
+  }, []);
 
   async function logout() {
     await signOut(auth);
     navigate("/login", { replace: true });
+  }
+
+  async function testNotification() {
+    if (!("Notification" in window)) {
+      alert("Notifications are not supported on this device.");
+      return;
+    }
+
+    let permission = Notification.permission;
+
+    if (permission === "default") {
+      permission = await Notification.requestPermission();
+    }
+
+    if (permission === "granted") {
+      new Notification("🔔 Remindly", {
+        body: "This is a test reminder notification!",
+      });
+    } else {
+      alert("Please allow notification permission in your browser settings.");
+    }
   }
 
   const name =
@@ -66,37 +82,31 @@ export default function Dashboard() {
           🔔 <span>Remindly</span>
         </div>
 
-        <button className="secondary" onClick={logout}>
-          Logout
-          function testNotification() {
-  if (!("Notification" in window)) {
-    alert("Notifications are not supported on this device.");
-    return;
-  }
+        <div className="dashboard-nav-actions">
+          <button
+            className="primary"
+            onClick={testNotification}
+          >
+            🔔 Test Notification
+          </button>
 
-  if (Notification.permission === "granted") {
-    new Notification("🔔 Remindly", {
-      body: "This is a test reminder notification!",
-    });
-  } else {
-    alert("Please allow notification permission first.");
-  }
-          }
-        </button>
-        
-        <button
-  className="primary"
-  onClick={testNotification}
->
-  🔔 Test Notification
-</button>
+          <button
+            className="secondary"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       <section className="dashboard-shell">
         <div className="dashboard-heading">
           <div>
             <p className="eyebrow">YOUR DASHBOARD</p>
-            <h1>Welcome, {name} 👋</h1>
+
+            <h1>
+              Welcome, {name} 👋
+            </h1>
 
             <p className="dashboard-copy">
               Keep track of your day and never miss an important reminder.
@@ -114,6 +124,7 @@ export default function Dashboard() {
         <div className="top-cards">
           <article className="dashboard-stat-card">
             <div className="stat-icon">📅</div>
+
             <div>
               <span>Today</span>
               <strong>{todayCount}</strong>
@@ -122,6 +133,7 @@ export default function Dashboard() {
 
           <article className="dashboard-stat-card">
             <div className="stat-icon">⏰</div>
+
             <div>
               <span>Upcoming</span>
               <strong>{upcomingCount}</strong>
@@ -130,6 +142,7 @@ export default function Dashboard() {
 
           <article className="dashboard-stat-card">
             <div className="stat-icon">✅</div>
+
             <div>
               <span>Completed</span>
               <strong>{completedCount}</strong>
@@ -159,8 +172,12 @@ export default function Dashboard() {
           ) : reminders.length === 0 ? (
             <div className="empty-state">
               <div>📝</div>
+
               <h2>No reminders yet</h2>
-              <p>Your first reminder will appear here.</p>
+
+              <p>
+                Your first reminder will appear here.
+              </p>
 
               <button
                 className="primary"
