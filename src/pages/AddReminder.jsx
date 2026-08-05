@@ -1,11 +1,35 @@
 import { useNavigate } from "react-router-dom";
+import { addReminder } from "../services/reminderService";
+import { useState } from "react";
 
 export default function AddReminder() {
   const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+const [description, setDescription] = useState("");
+const [date, setDate] = useState("");
+const [time, setTime] = useState("");
+const [category, setCategory] = useState("Personal");
+const [priority, setPriority] = useState("Medium");
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    alert("Reminder cloud save will be connected in the next update.");
+  async function handleSubmit(event) {
+  event.preventDefault();
+
+  try {
+    await addReminder({
+      title,
+      description,
+      date,
+      time,
+      category,
+      priority,
+    });
+
+    alert("✅ Reminder saved successfully!");
+    navigate("/dashboard");
+  } catch (err) {
+    console.error(err);
+    alert("❌ Failed to save reminder.");
+  }
   }
 
   return (
